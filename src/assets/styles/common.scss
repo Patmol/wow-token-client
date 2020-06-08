@@ -1,0 +1,8 @@
+@import 'bulma/sass/utilities/initial-variables.sass';
+@import 'bulma/sass/utilities/derived-variables.scss';
+
+body {
+    background-color: $black;
+    color: $light;
+    min-height: 100vh;
+}

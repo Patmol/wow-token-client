@@ -1,0 +1,10 @@
+{
+	"token": {
+		"region-cn": "China",
+		"region-eu": "Europe",
+		"region-kr": "Korea",
+		"region-tw": "Taiwan",
+		"region-us": "North America",
+		"updated-at": "Updated at"
+	}
+}

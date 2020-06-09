@@ -38,7 +38,7 @@ export default {
       hasFailed: 'wowToken/hasFailed',
     }),
     isUp() {
-      return this.informations.priceDifference > 0;
+      return this.information.priceDifference > 0;
     },
     latestUpdate() {
       return new Date(this.information.lastUpdatedTimestamp);

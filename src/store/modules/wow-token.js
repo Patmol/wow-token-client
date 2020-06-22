@@ -18,7 +18,7 @@ const getters = {
 
 // actions
 const actions = {
-  async information({ commit }, region) {
+  async [types.WOW_TOKEN_INFORMATION]({ commit }, region) {
     commit(types.WOW_TOKEN_REQUEST);
 
     try {
@@ -34,7 +34,7 @@ const actions = {
 const mutations = {
   async [types.WOW_TOKEN_INITIALIZATION](state, region) {
     if (state.informations === null || state.informations[region] === undefined) {
-      this.dispatch('wowToken/information', region);
+      this.dispatch(`${types.WOW_TOKEN_NAMESPACE}/${types.WOW_TOKEN_INFORMATION}`, region);
     }
   },
   [types.WOW_TOKEN_REQUEST](state) {
@@ -47,6 +47,12 @@ const mutations = {
       [response.region]: response,
     };
     state.isRequesting = false;
+  },
+  [types.WOW_TOKEN_REFRESH](state, response) {
+    state.informations = {
+      ...state.informations,
+      [response.region]: response,
+    };
   },
   [types.WOW_TOKEN_FAILURE](state, error) {
     console.error(error);

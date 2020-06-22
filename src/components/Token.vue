@@ -1,6 +1,7 @@
 <template>
   <div class="tile is-parent">
-    <article class="tile is-child notification is-dark">
+    <article class="tile is-child notification is-dark"
+      v-bind:class="hasBeenUpdated ? (isUp ? 'tile-updated-up' : 'tile-updated-down')  : ''">
       <template v-if="isRequesting">
         <Loader></Loader>
       </template>
@@ -38,13 +39,48 @@ export default {
       hasFailed: 'wowToken/hasFailed',
     }),
     isUp() {
-      return this.information.priceDifference > 0;
+      if (this.information) {
+        return this.information.priceDifference > 0;
+      }
+
+      return false;
     },
     latestUpdate() {
-      return new Date(this.information.lastUpdatedTimestamp);
+      if (this.information) {
+        return new Date(this.information.lastUpdatedTimestamp);
+      }
+
+      return Date.now;
     },
     information() {
-      return this.informations[this.region];
+      if (this.informations !== null) {
+        return this.informations[this.region];
+      }
+
+      return null;
+    },
+  },
+  data() {
+    return {
+      hasBeenUpdated: Boolean,
+    };
+  },
+  watch: {
+    informations(newInformations, oldInformations) {
+      if (oldInformations != null
+          && newInformations[this.region] !== undefined
+          && oldInformations[this.region] !== undefined) {
+        if ((newInformations[this.region].lastUpdatedTimestamp
+                !== oldInformations[this.region].lastUpdatedTimestamp)
+            || (newInformations[this.region].priceDifference
+                !== oldInformations[this.region].priceDifference)) {
+          this.hasBeenUpdated = true;
+
+          setTimeout(() => {
+            this.hasBeenUpdated = false;
+          }, 5000);
+        }
+      }
     },
   },
   props: {
@@ -56,17 +92,32 @@ export default {
     }),
   },
   mounted() {
+    this.hasBeenUpdated = false;
     this.initialization(this.region);
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+@import 'bulma/sass/utilities/initial-variables.sass';
+@import 'bulma/sass/utilities/derived-variables.scss';
+
+.price {
+  font-size: 2rem;
+  transition: all 0.5s linear;
+}
+
 .tile {
   text-align: center;
 }
 
-.price {
-  font-size: 2rem;
+.tile-updated {
+  &-down .price {
+    color: $danger;
+  }
+
+  &-up .price {
+    color: $success;
+  }
 }
 </style>

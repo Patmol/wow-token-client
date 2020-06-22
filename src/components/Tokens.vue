@@ -22,11 +22,15 @@
 
 <script>
 import TokenComponent from '@/components/Token.vue';
+import wowTokenService from '../services/wow-token-service';
 
 export default {
   name: 'Tokens',
   components: {
     TokenComponent,
+  },
+  mounted() {
+    wowTokenService.connect();
   },
 };
 </script>

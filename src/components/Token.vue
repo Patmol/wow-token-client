@@ -6,7 +6,7 @@
         <Loader></Loader>
       </template>
       <template v-else-if="information">
-        <h2 class="title">{{ $t(`token.region-${information.region}`) }}</h2>
+        <h3 class="title">{{ $t(`token.region-${information.region}`) }}</h3>
         <p class="price">
           <i18n-n :value="(information.price / 10000)"></i18n-n> <i
             class="fas fa-coins has-text-warning"></i>
